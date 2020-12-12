@@ -13,3 +13,11 @@ General idea:
 - Check if there are any results
    * If yes, check if they are actually a match and link them
    * If no, create a new wikidata item using the information from the OSM node
+
+## Setup
+
+It is recommended to install all dependencies in a virtualenv. In order to setup the virtualenv for this project, simply run:
+
+```bash
+./setup.sh
+```
