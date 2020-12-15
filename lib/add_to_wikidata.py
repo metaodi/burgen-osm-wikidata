@@ -56,6 +56,7 @@ def map_wd_types(row):
 api_url = os.getenv('WIKIDATA_API_URL')
 username = os.getenv('BOT_NAME'),
 password = os.getenv('BOT_PASSWORD'),
+wd = wd.Wikidata(username, password, api_url)
 
 osm_csv = arguments['--file']
 with open(osm_csv, 'r') as f:
@@ -67,44 +68,34 @@ with open(osm_csv, 'r') as f:
         print(f"Historic: {row['historic']}") 
         print(f"Site type: {row['site_type']}") 
         print('-' * 10)
-        print(f"Wikidata instance of: {[i['desc'] for i in map_wd_types(row)]}")
+        types = map_wd_types(row)
+        print(f"Wikidata instance of: {[i['desc'] for i in types]}")
 
         if not skip_item():
             continue
         # TODO
         print("Creating a new wikidata item")
         print("") 
+
+        # create a new item
+        result = wd.create_item(row['name'])
+        item = result['entity']['id']
+        print(f"New page created: https://wikidata.org/wiki/{item}")
+
+        # instance of
+        for t in types:
+            wd.create_item_claim(item, 'P31', t['id']) # instance of
+
+        # country
+        switzerland = 'Q39'
+        wd.create_item_claim(item, 'P17', switzerland)
+
+        # coordinate location
+        wd.create_coord_claim(item, 'P625', row['lat'], row['lon'])
+
+        pprint(wd.get_item(item))
+        print("") 
         print("") 
 
 # sandbox item
 #item = 'Q15397819'
-
-wd = wd.Wikidata(username, password, api_url)
-
-# create a new item
-#result = wd.create_item('Burgstelle Biberlinsburg')
-#print(result)
-# Q-ID of the new page
-#item = result['entity']['id']
-
-item = 'Q104176636'
-
-# add claims
-
-## instance of
-castle_types = {
-    'castle ruin': 'Q17715832',
-}
-#wd.create_item_claim(item, 'P31', castle_types['castle ruin'])
-
-## country
-switzerland = 'Q39'
-#wd.create_item_claim(item, 'P17', switzerland)
-
-## coordinate location
-lat = 47.3660256
-lon = 8.5781995
-# wd.create_coord_claim(item, 'P625', lat, lon)
-
-
-#pprint(wd.get_item(item))

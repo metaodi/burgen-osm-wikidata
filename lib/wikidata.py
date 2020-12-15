@@ -96,6 +96,7 @@ class Wikidata(object):
         res.raise_for_status()
         result = res.json()
         if result.get('error'):
+            print(result)
             raise WikidataError(result.get('error'))
         return result
 
@@ -112,10 +113,10 @@ class Wikidata(object):
 
     def create_coord_claim(self, item, prop, lat, lon):
         claim = {
-            'property':prop, 
+            'property': prop, 
             'value': {
-                'latitude': lat, 
-                'longitude': lon,
+                'latitude': float(lat), 
+                'longitude': float(lon),
                 'precision': 0.000001,
             }
         }
