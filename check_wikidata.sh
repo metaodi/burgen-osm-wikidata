@@ -3,4 +3,6 @@
 set -e
 set -o pipefail
 
-cat overpass_castle_query.txt | ./overpass.py | ./parse_osm_data.py | ./generate_wd_query.py | ./parse_wikidata_query.py
+DIR="$(cd "$(dirname "$0")" && pwd)"
+
+cat $DIR/queries/overpass_castle_query.txt | $DIR/lib/overpass.py | $DIR/lib/parse_osm_data.py | $DIR/lib/generate_wd_query.py | $DIR/lib/parse_wikidata_query.py

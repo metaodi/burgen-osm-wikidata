@@ -4,6 +4,13 @@ import sys
 import traceback
 import os
 
+__location__ = os.path.realpath(
+    os.path.join(
+        os.getcwd(),
+        os.path.dirname(__file__)
+    )
+)
+
 def remove_clutter(name):
     new_name = name.replace('Burgstelle', '')
     new_name = name.replace('Burg', '')
@@ -17,7 +24,8 @@ def remove_clutter(name):
 
 try:
     base_query = ''
-    with open('wikidata_castle_query.txt', 'r') as f:
+    wd_query = os.path.join(__location__, '..', 'queries', 'wikidata_castle_query.txt')
+    with open(wd_query, 'r') as f:
         base_query = f.read()
     for line in sys.stdin:
         name = line.split(',')[0]
