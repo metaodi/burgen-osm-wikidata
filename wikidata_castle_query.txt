@@ -5,7 +5,7 @@ WHERE
   ?castle wdt:P17 wd:Q39.
   ?castle wdt:P31/wdt:P279* ?type . # castle-like types
   ?castle rdfs:label ?castleLabel .
-  FILTER(regex(?castleLabel, ".*Schiterburg.*", "i"))
+  FILTER(regex(?castleLabel, ".*{osm_name}.*", "i"))
   OPTIONAL {?castle wdt:P625 ?coord .} # geographic coord
   OPTIONAL {
     ?castle p:P625 ?statement.
