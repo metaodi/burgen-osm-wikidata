@@ -2,5 +2,12 @@
 set -e
 set -o pipefail
 
-./generate_csv.sh > missing_wikidata.csv
-./add_to_wikidata.py -f missing_wikidata.csv
+temp_file=$(mktemp)
+function cleanup {
+  rm ${temp_file}
+  exit $?
+}
+trap "cleanup" EXIT
+
+./generate_csv.sh > ${temp_file}
+./add_to_wikidata.py -f ${temp_file}
