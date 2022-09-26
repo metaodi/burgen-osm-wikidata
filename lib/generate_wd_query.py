@@ -24,7 +24,7 @@ def remove_clutter(name):
 
 try:
     base_query = ''
-    wd_query = os.path.join(__location__, '..', 'queries', 'wikidata_castle_query.txt')
+    wd_query = os.path.join(__location__, '..', 'queries', 'wikidata_castle_query.overpassql')
     with open(wd_query, 'r') as f:
         base_query = f.read()
     for line in sys.stdin:
